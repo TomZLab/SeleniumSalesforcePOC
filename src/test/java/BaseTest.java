@@ -37,15 +37,17 @@ public class BaseTest {
 
     private String pathToCredentials = "src/test/resources/credentials.json";
 
-    protected String username;
-    protected String password;
-    protected String testURL = "https://test.salesforce.com";
+    protected String USERNAME;
+    protected String PASSWORD;
+    protected String URL = "https://test.salesforce.com";
 
     @RegisterExtension
     TestStatus testStatus = new TestStatus();
 
     @BeforeAll
-    private void setup(){
+    private void setup() throws IOException, ParseException {
+
+        getCredentials();
 
         //block notifications popup
         Map<String, Object> prefs = new HashMap<>();
@@ -103,8 +105,8 @@ public class BaseTest {
         JSONParser parser = new JSONParser();
         Object object = parser.parse(new FileReader(pathToCredentials));
         JSONObject jsonObject = (JSONObject) object;
-        username = (String) jsonObject.get("username");
-        password = (String) jsonObject.get("password");
+        USERNAME = (String) jsonObject.get("username");
+        PASSWORD = (String) jsonObject.get("password");
     }
 
     public String takeScreenshot(String timeStamp) {
